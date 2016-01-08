@@ -1,6 +1,7 @@
 require.config({
   paths: {
     'text': '../node_modules/requirejs-text/text',
+    'mustache': '../node_modules/mustache/mustache',
   },
   packages: [ {
     name: 'bff',

@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "mustache": "^2.2.1",
     "requirejs": "^2.1.22",
     "requirejs-text": "^2.0.12",
     "todomvc-app-css": "^1.0.0",
