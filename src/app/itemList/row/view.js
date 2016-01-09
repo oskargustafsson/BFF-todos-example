@@ -2,7 +2,6 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
-  var patch = require('libs/bff/dev/dom-patcher');
   var mustache = require('mustache');
   var ItemListRowRecord = require('./record');
   var templateHtml = require('text!./template.html');
@@ -16,29 +15,32 @@ define(function (require) {
       this.itemRecord = itemRecord;
       this.stateRecord = new ItemListRowRecord();
 
-      this.el = this.parseHtml(this.getViewHtml());
-      this.inputEl = this.$('input.edit');
+      this.el = this.parseHtml(this.getHtml());
 
-      this.listenTo(this.$('input.toggle'), 'change', this.onToggleElChanged);
-      this.listenTo(this.$('button.destroy'), 'click', this.removeItemFromList);
-      this.listenTo(this.$('label'), 'dblclick', this.onLabelDoubleClicked);
-      this.listenTo(this.inputEl, 'change', this.onInputChanged);
+      this.listenTo('input.toggle', 'change', this.onToggleElChanged);
+      this.listenTo('button.destroy', 'click', this.removeItemFromList);
+      this.listenTo('label', 'dblclick', this.onLabelDoubleClicked);
+      this.listenTo('input.edit', 'change', this.onInputChanged);
 
-      this.listenTo(this.itemRecord, 'change', this.onItemChanged);
+      this.listenTo(this.itemRecord, 'change', this.update);
       this.listenTo(this.itemRecord, 'removed', this.destroy);
       this.listenTo(this.stateRecord, 'change:editing', this.onEditingStateChanged);
     },
 
-    getViewHtml: function () {
-      return mustache.render(templateHtml, this.itemRecord);
+    getHtml: function () {
+      return mustache.render(templateHtml, {
+        text: this.itemRecord.text,
+        completed: this.itemRecord.completed,
+        editing: this.stateRecord.editing,
+      });
     },
 
-    onItemChanged: function () {
-      this.patchEl(this.getViewHtml());
+    update: function () {
+      this.patchEl(this.getHtml());
     },
 
     onToggleElChanged: function (ev) {
-      this.itemRecord.completed = ev.currentTarget.checked;
+      this.itemRecord.completed = ev.target.checked;
     },
 
     removeItemFromList: function () {
@@ -50,10 +52,10 @@ define(function (require) {
     },
 
     onEditingStateChanged: function (editing) {
-      this.el.classList[editing ? 'add' : 'remove']('editing');
-      this[editing ? 'listenTo' : 'stopListening'](this.inputEl, 'blur', this.onInputElBlurred);
-      this[editing ? 'listenTo' : 'stopListening'](this.inputEl, 'keydown', this.onInputElKeyDown);
-      editing && this.inputEl.focus();
+      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'blur', this.onInputElBlurred);
+      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'keydown', this.onInputElKeyDown);
+      this.update();
+      editing && this.$('input.edit').focus();
     },
 
     onInputElBlurred: function () {
@@ -67,7 +69,7 @@ define(function (require) {
     },
 
     onInputChanged: function (ev) {
-      var itemText = ev.currentTarget.value.trim();
+      var itemText = ev.target.value.trim();
       if (itemText) {
         this.itemRecord.text = itemText;
       } else {
