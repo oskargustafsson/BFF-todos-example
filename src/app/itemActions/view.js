@@ -2,8 +2,10 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
-  var mustache = require('mustache');
+  var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
+
+  var template = makeTemplate(templateHtml);
 
   return View.prototype.makeSubclass({
 
@@ -20,7 +22,7 @@ define(function (require) {
 
     getHtml: function () {
       var nTodosLeft = this.itemList.nUncompleted;
-      return mustache.render(templateHtml, {
+      return template({
         nTodosLeft: nTodosLeft + ' item' + (nTodosLeft === 1 ? '' : 's') + ' left',
         isListEmpty: this.itemList.length === 0,
         isNoneCompleted: this.itemList.nCompleted === 0,

@@ -2,10 +2,12 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
-  var mustache = require('mustache');
   var ItemListRowRecord = require('./record');
+  var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
   var router = require('app/router');
+
+  var template = makeTemplate(templateHtml);
 
   var ENTER_KEY = 13;
   var ESCAPE_KEY = 27;
@@ -39,7 +41,7 @@ define(function (require) {
     },
 
     getHtml: function () {
-      return mustache.render(templateHtml, {
+      return template({
         text: this.itemRecord.text,
         completed: this.itemRecord.completed,
         editing: this.stateRecord.editing,

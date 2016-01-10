@@ -2,9 +2,11 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
-  var mustache = require('mustache');
+  var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
   var ItemListRowView = require('./row/view');
+
+  var template = makeTemplate(templateHtml);
 
   return View.prototype.makeSubclass({
 
@@ -22,7 +24,7 @@ define(function (require) {
     },
 
     getHtml: function () {
-      return mustache.render(templateHtml, {
+      return template({
         isListEmpty: this.itemList.length === 0,
         isAllCompleted: this.itemList.nCompleted === this.itemList.length,
       });
