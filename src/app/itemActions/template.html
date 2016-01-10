@@ -1,9 +1,13 @@
 <footer id="footer" class="<%= isListEmpty ? 'hidden' : '' %>">
   <span id="todo-count"><%= nTodosLeft %></span>
   <ul id="filters">
-    <li><a href="#/" class="selected">All</a></li>
-    <li><a href="#/active">Active</a></li>
-    <li><a href="#/completed">Completed</a></li>
+    <% for (var filterPath in filters) { %>
+    <li>
+      <a href="#/<%= filterPath %>" class="<%= filterPath === currentPath ? 'selected' : '' %>">
+        <%= filters[filterPath] %>
+      </a>
+    </li>
+    <% } %>
   </ul>
   <button id="clear-completed" class="<%= isNoneCompleted ? 'hidden' : '' %>">
     Clear completed
