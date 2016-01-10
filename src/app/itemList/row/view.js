@@ -15,14 +15,14 @@ define(function (require) {
       this.itemRecord = itemRecord;
       this.stateRecord = new ItemListRowRecord();
 
-      this.el = this.parseHtml(this.getHtml());
+      this.render();
 
       this.listenTo('input.toggle', 'change', this.onToggleElChanged);
       this.listenTo('button.destroy', 'click', this.removeItemFromList);
       this.listenTo('label', 'dblclick', this.onLabelDoubleClicked);
       this.listenTo('input.edit', 'change', this.onInputChanged);
 
-      this.listenTo(this.itemRecord, 'change', this.update);
+      this.listenTo(this.itemRecord, 'change', this.render);
       this.listenTo(this.itemRecord, 'removed', this.destroy);
       this.listenTo(this.stateRecord, 'change:editing', this.onEditingStateChanged);
     },
@@ -33,10 +33,6 @@ define(function (require) {
         completed: this.itemRecord.completed,
         editing: this.stateRecord.editing,
       });
-    },
-
-    update: function () {
-      this.patchEl(this.getHtml());
     },
 
     onToggleElChanged: function (ev) {
@@ -54,7 +50,7 @@ define(function (require) {
     onEditingStateChanged: function (editing) {
       this[editing ? 'listenTo' : 'stopListening']('input.edit', 'blur', this.onInputElBlurred);
       this[editing ? 'listenTo' : 'stopListening']('input.edit', 'keydown', this.onInputElKeyDown);
-      this.update();
+      this.render();
       editing && this.$('input.edit').focus();
     },
 
@@ -63,9 +59,8 @@ define(function (require) {
     },
 
     onInputElKeyDown: function (ev) {
-      if (ev.which === ENTER_KEY) {
-        this.stateRecord.editing = false;
-      }
+      if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
+      this.stateRecord.editing = false;
     },
 
     onInputChanged: function (ev) {

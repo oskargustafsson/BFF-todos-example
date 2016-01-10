@@ -12,7 +12,14 @@ define(function (require) {
         }, 0);
       },
       dependencies: [ 'length', 'item:completed' ],
-    }
+    },
+
+    nUncompleted: {
+      getter: function () {
+        return this.length - this.nCompleted;
+      },
+      dependencies: [ 'length', 'nCompleted' ],
+    },
 
   });
 

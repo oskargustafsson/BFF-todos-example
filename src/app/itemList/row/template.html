@@ -1,8 +1,8 @@
 <li class="{{#completed}}completed{{/completed}}{{#editing}}editing{{/editing}}">
   <div class="view">
     <input class="toggle" type="checkbox" {{#completed}}checked="checked"{{/completed}}>
-    <label>{{ text }}</label>
+    <label>{{text}}</label>
     <button class="destroy"></button>
   </div>
-  <input class="edit" value="{{ text }}">
+  <input class="edit" value="{{text}}">
 </li>

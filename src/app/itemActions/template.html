@@ -1,5 +1,7 @@
-<footer id="footer">
-  <span id="todo-count"></span>
+<footer id="footer" class="{{#isListEmpty}}hidden{{/isListEmpty}}">
+  <span id="todo-count">{{nTodosLeft}}</span>
   <ul id="filters"></ul>
-  <button id="clear-completed">Clear completed</button>
+  <button id="clear-completed" class="{{#isNoneCompleted}}hidden{{/isNoneCompleted}}">
+    Clear completed
+  </button>
 </footer>

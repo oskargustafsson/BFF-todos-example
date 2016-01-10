@@ -2,6 +2,7 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
+  var mustache = require('mustache');
   var templateHtml = require('text!./template.html');
 
   return View.prototype.makeSubclass({
@@ -9,30 +10,25 @@ define(function (require) {
     constructor: function (itemList) {
       this.itemList = itemList;
 
-      this.el = this.parseHtml(templateHtml);
-      this.clearCompletedButtonEl = this.$('#clear-completed');
+      this.render();
 
-      this.updateViewVisibility(itemList.length);
-      this.updateClearButtonVisibility(itemList.nCompleted);
+      this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
 
-      this.listenTo(itemList, 'change:length', this.updateViewVisibility);
-      this.listenTo(itemList, 'change:nCompleted', this.updateClearButtonVisibility);
-
-      this.listenTo(this.clearCompletedButtonEl, 'click', this.onClearButtonClicked);
+      this.listenTo(itemList, 'change:length', this.render);
+      this.listenTo(itemList, 'change:nCompleted', this.render);
     },
 
-    updateViewVisibility: function (listLength) {
-      this.el.classList[listLength ? 'remove' : 'add']('hidden');
-    },
-
-    updateClearButtonVisibility: function (nCompleted) {
-      this.clearCompletedButtonEl.classList[nCompleted === 0 ? 'add' : 'remove']('hidden');
+    getHtml: function () {
+      var nTodosLeft = this.itemList.nUncompleted;
+      return mustache.render(templateHtml, {
+        nTodosLeft: nTodosLeft + ' item' + (nTodosLeft === 1 ? '' : 's') + ' left',
+        isListEmpty: this.itemList.length === 0,
+        isNoneCompleted: this.itemList.nCompleted === 0,
+      });
     },
 
     onClearButtonClicked: function () {
-      this.itemList.filterMut(function (item) {
-        return !item.completed;
-      });
+      this.itemList.filterMut(function (item) { return !item.completed; });
     },
 
   });

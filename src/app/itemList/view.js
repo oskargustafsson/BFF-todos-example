@@ -2,6 +2,7 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
+  var mustache = require('mustache');
   var templateHtml = require('text!./template.html');
   var ItemListRowView = require('./row/view');
 
@@ -9,36 +10,33 @@ define(function (require) {
 
     constructor: function (itemList) {
       this.itemList = itemList;
-      this.el = this.parseHtml(templateHtml);
-      this.listEl = this.$('#todo-list');
-      this.toggleAllEl = this.$('#toggle-all');
 
-      this.updateViewVisibility(itemList.length);
+      this.render = this.render.bind(this, { ignoreSubtreeOf: '#todo-list' });
+      this.render();
 
-      this.listenTo(this.toggleAllEl, 'change', this.onToggleAllChanged);
+      this.listenTo('input#toggle-all', 'change', this.onToggleAllChanged);
 
-      this.listenTo(itemList, 'change:length', this.updateViewVisibility);
-      this.listenTo(itemList, 'item:added', this.onItemAdded);
-      this.listenTo(itemList, 'change:nCompleted', this.onCompletedCountChanged);
+      this.listenTo(itemList, 'change:length', this.render);
+      this.listenTo(itemList, 'change:nCompleted', this.render);
+      this.listenTo(itemList, 'item:added', this.onListItemAdded);
     },
 
-    updateViewVisibility: function (listLength) {
-      this.el.classList[listLength ? 'remove' : 'add']('hidden');
+    getHtml: function () {
+      return mustache.render(templateHtml, {
+        isListEmpty: this.itemList.length === 0,
+        isAllCompleted: this.itemList.nCompleted === this.itemList.length,
+      });
     },
 
-    onItemAdded: function (itemRecord) {
-      this.addChild(new ItemListRowView(this.itemList, itemRecord), this.listEl);
-    },
-
-    onToggleAllChanged: function () {
-      var completed = this.toggleAllEl.checked;
+    onToggleAllChanged: function (ev) {
+      var completed = ev.target.checked;
       this.itemList.forEach(function (item) {
         item.completed = completed;
       });
     },
 
-    onCompletedCountChanged: function (nCompleted) {
-      this.toggleAllEl.checked = nCompleted === this.itemList.length;
+    onListItemAdded: function (itemRecord) {
+      this.addChild(new ItemListRowView(this.itemList, itemRecord), this.$('#todo-list'));
     },
 
   });

@@ -11,27 +11,23 @@ define(function (require) {
 
     constructor: function (itemList) {
       this.itemList = itemList;
-      this.el = this.parseHtml(templateHtml);
-      this.inputEl = this.$('#new-todo');
-
-      this.listenTo(this.inputEl, 'keydown', this.onKeyDown);
+      this.render();
+      this.listenTo('#new-todo', 'keydown', this.onInputElKeyDown);
     },
 
-    onKeyDown: function (ev) {
-      switch (ev.which) {
-      case ENTER_KEY:
-        this.addItemToList();
-        break;
-      }
+    getHtml: function () {
+      return templateHtml;
     },
 
-    addItemToList: function () {
-      var itemText = this.inputEl.value.trim();
+    onInputElKeyDown: function (ev) {
+      if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
 
+      var itemText = ev.target.value.trim();
       if (!itemText) { return; }
 
       this.itemList.push(new ItemRecord({ text: itemText }));
-      this.inputEl.value = '';
+
+      this.render();
     },
 
   });
