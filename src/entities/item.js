@@ -5,11 +5,6 @@ define(function (require) {
 
   return Record.prototype.bindSchema({
 
-    /*id: {
-      type: 'number',
-      forbiddenValues: [ undefined ],
-    },*/
-
     text: {
       type: 'string',
       forbiddenValues: [ undefined ],

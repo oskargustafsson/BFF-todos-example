@@ -5,6 +5,12 @@ define(function (require) {
 
   return Record.prototype.bindSchema({
 
+    hidden: {
+      type: 'boolean',
+      defaultValue: false,
+      forbiddenValues: [ undefined ],
+    },
+
     editing: {
       type: 'boolean',
       defaultValue: false,

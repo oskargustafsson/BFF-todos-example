@@ -5,6 +5,7 @@ define(function (require) {
   var mustache = require('mustache');
   var ItemListRowRecord = require('./record');
   var templateHtml = require('text!./template.html');
+  var router = require('app/router');
 
   var ENTER_KEY = 13;
   var ESCAPE_KEY = 27;
@@ -22,10 +23,14 @@ define(function (require) {
       this.listenTo('button.destroy', 'click', this.removeItemFromList);
       this.listenTo('label', 'dblclick', this.enterEditMode);
 
-      this.listenTo(this.itemRecord, 'change', this.render);
-      this.listenTo(this.itemRecord, 'removed', this.destroy);
+      this.listenTo(this.stateRecord, 'change', this.render);
       this.listenTo(this.stateRecord, 'change:editing', this.onEditingStateChanged);
-      this.listenTo(this.stateRecord, 'change:editing', this.render);
+      this.listenTo(this.itemRecord, 'removed', this.destroy);
+      this.listenTo(this.itemRecord, 'change', this.render);
+      this.listenTo(this.itemRecord, 'change:completed', this.updateItemVisibility);
+      this.listenTo(router, 'change:route', this.updateItemVisibility);
+
+      this.updateItemVisibility();
     },
 
     render: function () {
@@ -38,7 +43,16 @@ define(function (require) {
         text: this.itemRecord.text,
         completed: this.itemRecord.completed,
         editing: this.stateRecord.editing,
+        hidden: this.stateRecord.hidden,
       });
+    },
+
+    updateItemVisibility: function () {
+      switch (router.route) {
+      case 'active': this.stateRecord.hidden = this.itemRecord.completed; break;
+      case 'completed': this.stateRecord.hidden = !this.itemRecord.completed; break;
+      default: this.stateRecord.hidden = false; break;
+      }
     },
 
     onToggleElChanged: function (ev) {
