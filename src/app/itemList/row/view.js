@@ -7,6 +7,7 @@ define(function (require) {
   var templateHtml = require('text!./template.html');
 
   var ENTER_KEY = 13;
+  var ESCAPE_KEY = 27;
 
   return View.prototype.makeSubclass({
 
@@ -19,12 +20,17 @@ define(function (require) {
 
       this.listenTo('input.toggle', 'change', this.onToggleElChanged);
       this.listenTo('button.destroy', 'click', this.removeItemFromList);
-      this.listenTo('label', 'dblclick', this.onLabelDoubleClicked);
-      this.listenTo('input.edit', 'change', this.onInputChanged);
+      this.listenTo('label', 'dblclick', this.enterEditMode);
 
       this.listenTo(this.itemRecord, 'change', this.render);
       this.listenTo(this.itemRecord, 'removed', this.destroy);
       this.listenTo(this.stateRecord, 'change:editing', this.onEditingStateChanged);
+      this.listenTo(this.stateRecord, 'change:editing', this.render);
+    },
+
+    render: function () {
+      View.prototype.render.apply(this, arguments);
+      this.stateRecord.editing && this.$('input.edit').focus();
     },
 
     getHtml: function () {
@@ -43,15 +49,9 @@ define(function (require) {
       this.itemList.remove(this.itemRecord);
     },
 
-    onLabelDoubleClicked: function () {
-      this.stateRecord.editing = !this.stateRecord.editing;
-    },
-
-    onEditingStateChanged: function (editing) {
-      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'blur', this.onInputElBlurred);
-      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'keydown', this.onInputElKeyDown);
-      this.render();
-      editing && this.$('input.edit').focus();
+    enterEditMode: function () {
+      this.stateRecord.saveOnExit = true;
+      this.stateRecord.editing = true;
     },
 
     onInputElBlurred: function () {
@@ -59,16 +59,26 @@ define(function (require) {
     },
 
     onInputElKeyDown: function (ev) {
-      if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
-      this.stateRecord.editing = false;
+      switch (ev.which || ev.keyCode) {
+      case ESCAPE_KEY:
+        this.stateRecord.saveOnExit = false;
+        /* falls through */
+      case ENTER_KEY:
+        this.stateRecord.editing = false;
+      }
     },
 
-    onInputChanged: function (ev) {
-      var itemText = ev.target.value.trim();
-      if (itemText) {
-        this.itemRecord.text = itemText;
-      } else {
-        this.removeItemFromList();
+    onEditingStateChanged: function (editing) {
+      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'blur', this.onInputElBlurred);
+      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'keydown', this.onInputElKeyDown);
+
+      if (!editing && this.stateRecord.saveOnExit) {
+        var itemText = this.$('input.edit').value.trim();
+        if (itemText) {
+          this.itemRecord.text = itemText;
+        } else {
+          this.removeItemFromList();
+        }
       }
     },
 

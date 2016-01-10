@@ -11,6 +11,12 @@ define(function (require) {
       forbiddenValues: [ undefined ],
     },
 
+    saveOnExit: {
+      type: 'boolean',
+      defaultValue: true,
+      forbiddenValues: [ undefined ],
+    },
+
   });
 
 });
