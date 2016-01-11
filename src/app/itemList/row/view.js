@@ -25,8 +25,8 @@ define(function (require) {
       this.listenTo('button.destroy', 'click', this.removeItemFromList);
       this.listenTo('label', 'dblclick', this.enterEditMode);
 
-      this.listenTo(this.stateRecord, 'change', this.render);
       this.listenTo(this.stateRecord, 'change:editing', this.onEditingStateChanged);
+      this.listenTo(this.stateRecord, 'change:hidden', this.render);
       this.listenTo(this.itemRecord, 'removed', this.destroy);
       this.listenTo(this.itemRecord, 'change', this.render);
       this.listenTo(this.itemRecord, 'change:completed', this.updateItemVisibility);
@@ -96,6 +96,8 @@ define(function (require) {
           this.removeItemFromList();
         }
       }
+
+      this.render();
     },
 
   });
