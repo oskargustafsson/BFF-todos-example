@@ -11,8 +11,11 @@ define(function (require) {
 
     constructor: function (itemList) {
       this.itemList = itemList;
+
       this.render();
+
       this.listenTo('#new-todo', 'keydown', this.onInputElKeyDown);
+      this.listenTo(itemList, 'item:added', this.render);
     },
 
     getHtml: function () {
@@ -21,13 +24,8 @@ define(function (require) {
 
     onInputElKeyDown: function (ev) {
       if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
-
       var itemText = ev.target.value.trim();
-      if (!itemText) { return; }
-
-      this.itemList.push(new ItemRecord({ text: itemText }));
-
-      this.render();
+      itemText && this.itemList.push(new ItemRecord({ text: itemText }));
     },
 
   });
