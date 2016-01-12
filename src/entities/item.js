@@ -5,7 +5,7 @@ define(function (require) {
 
   return Record.prototype.bindSchema({
 
-    text: {
+    title: {
       type: 'string',
       forbiddenValues: [ undefined ],
     },

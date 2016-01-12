@@ -25,7 +25,7 @@ define(function (require) {
     onInputElKeyDown: function (ev) {
       if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
       var itemText = ev.target.value.trim();
-      itemText && this.itemList.push(new ItemRecord({ text: itemText }));
+      itemText && this.itemList.push(new ItemRecord({ title: itemText }));
     },
 
   });

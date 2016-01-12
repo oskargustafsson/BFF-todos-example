@@ -29,9 +29,8 @@ define(function (require) {
     },
 
     getHtml: function () {
-      var nTodosLeft = this.itemList.nUncompleted;
       return template({
-        nTodosLeft: nTodosLeft + ' item' + (nTodosLeft === 1 ? '' : 's') + ' left',
+        nTodosLeft: this.itemList.nUncompleted,
         isListEmpty: this.itemList.length === 0,
         isNoneCompleted: this.itemList.nCompleted === 0,
         currentPath: router.route,

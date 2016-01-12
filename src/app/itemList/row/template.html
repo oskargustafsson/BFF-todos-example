@@ -1,8 +1,8 @@
 <li class="<%= completed ? 'completed' : '' %><%= editing ? ' editing' : '' %><%= hidden ? ' hidden' : '' %>">
   <div class="view">
     <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-    <label><%- text %></label>
+    <label><%- title %></label>
     <button class="destroy"></button>
   </div>
-  <input class="edit" value="<%- text %>">
+  <input class="edit" value="<%- title %>">
 </li>

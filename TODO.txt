@@ -1,0 +1,6 @@
+- IE9 compat
+- Write unit tests
+- File structure
+- README file
+- .gitignore (don't ignore the files used by the example)
+- Run automated browser tests

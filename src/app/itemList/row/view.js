@@ -42,7 +42,7 @@ define(function (require) {
 
     getHtml: function () {
       return template({
-        text: this.itemRecord.text,
+        title: this.itemRecord.title,
         completed: this.itemRecord.completed,
         editing: this.stateRecord.editing,
         hidden: this.stateRecord.hidden,
@@ -89,9 +89,9 @@ define(function (require) {
       this[editing ? 'listenTo' : 'stopListening']('input.edit', 'keydown', this.onInputElKeyDown);
 
       if (!editing && this.stateRecord.saveOnExit) {
-        var itemText = this.$('input.edit').value.trim();
-        if (itemText) {
-          this.itemRecord.text = itemText;
+        var title = this.$('input.edit').value.trim();
+        if (title) {
+          this.itemRecord.title = title;
         } else {
           this.removeItemFromList();
         }

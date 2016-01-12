@@ -1,5 +1,7 @@
 <footer id="footer" class="<%= isListEmpty ? 'hidden' : '' %>">
-  <span id="todo-count"><%= nTodosLeft %></span>
+  <span id="todo-count">
+    <strong><%= nTodosLeft %></strong> <%= 'item' + (nTodosLeft === 1 ? '' : 's') + ' left' %>
+  </span>
   <ul id="filters">
     <% for (var filterPath in filters) { %>
     <li>
