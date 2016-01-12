@@ -2,6 +2,8 @@ define(function (require) {
   'use strict';
 
   var View = require('libs/bff/dev/view');
+  var extend = require('libs/bff/dev/extend');
+  var eventEmitter = require('libs/bff/dev/event-emitter');
   var ItemListRowRecord = require('./record');
   var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
@@ -12,24 +14,26 @@ define(function (require) {
   var ENTER_KEY = 13;
   var ESCAPE_KEY = 27;
 
-  return View.prototype.makeSubclass({
+  var ItemListRowView = View.prototype.makeSubclass({
 
-    constructor: function (itemList, itemRecord) {
-      this.itemList = itemList;
+    constructor: function (itemRecord) {
       this.itemRecord = itemRecord;
       this.stateRecord = new ItemListRowRecord();
 
       this.render();
 
-      this.listenTo('input.toggle', 'change', this.onToggleElChanged);
-      this.listenTo('button.destroy', 'click', this.removeItemFromList);
+      this.listenTo('input.toggle', 'change', this.setItemCompletedState);
+      this.listenTo('input.edit', 'blur', this.leaveEditMode);
+      this.listenTo('input.edit', 'keydown', this.leaveEditMode);
+      this.listenTo('button.destroy', 'click', this.emit.bind(this, 'removeItem', this.itemRecord));
       this.listenTo('label', 'dblclick', this.enterEditMode);
 
-      this.listenTo(this.stateRecord, 'change:editing', this.onEditingStateChanged);
+      this.listenTo(this.stateRecord, 'change:editing', this.updateItemTitle);
       this.listenTo(this.stateRecord, 'change:hidden', this.render);
       this.listenTo(this.itemRecord, 'removed', this.destroy);
       this.listenTo(this.itemRecord, 'change', this.render);
       this.listenTo(this.itemRecord, 'change:completed', this.updateItemVisibility);
+      this.listenTo(this.itemRecord, 'change:title', this.removeEmptyItem);
       this.listenTo(router, 'change:route', this.updateItemVisibility);
 
       this.updateItemVisibility();
@@ -41,12 +45,7 @@ define(function (require) {
     },
 
     getHtml: function () {
-      return template({
-        title: this.itemRecord.title,
-        completed: this.itemRecord.completed,
-        editing: this.stateRecord.editing,
-        hidden: this.stateRecord.hidden,
-      });
+      return template(extend(this.itemRecord.toJSON(), this.stateRecord.toJSON()));
     },
 
     updateItemVisibility: function () {
@@ -57,12 +56,8 @@ define(function (require) {
       }
     },
 
-    onToggleElChanged: function (ev) {
+    setItemCompletedState: function (ev) {
       this.itemRecord.completed = ev.target.checked;
-    },
-
-    removeItemFromList: function () {
-      this.itemList.remove(this.itemRecord);
     },
 
     enterEditMode: function () {
@@ -70,11 +65,8 @@ define(function (require) {
       this.stateRecord.editing = true;
     },
 
-    onInputElBlurred: function () {
-      this.stateRecord.editing = false;
-    },
-
-    onInputElKeyDown: function (ev) {
+    leaveEditMode: function (ev) {
+      if (ev.type === 'blur') { ev.keyCode = ENTER_KEY; }
       switch (ev.which || ev.keyCode) {
       case ESCAPE_KEY:
         this.stateRecord.saveOnExit = false;
@@ -84,22 +76,21 @@ define(function (require) {
       }
     },
 
-    onEditingStateChanged: function (editing) {
-      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'blur', this.onInputElBlurred);
-      this[editing ? 'listenTo' : 'stopListening']('input.edit', 'keydown', this.onInputElKeyDown);
-
+    updateItemTitle: function (editing) {
       if (!editing && this.stateRecord.saveOnExit) {
-        var title = this.$('input.edit').value.trim();
-        if (title) {
-          this.itemRecord.title = title;
-        } else {
-          this.removeItemFromList();
-        }
+        this.itemRecord.title = this.$('input.edit').value.trim();
       }
-
       this.render();
     },
 
+    removeEmptyItem: function (title, prevTitle, item) {
+      title || this.emit('removeItem', item);
+    }
+
   });
+
+  extend(ItemListRowView.prototype, eventEmitter);
+
+  return ItemListRowView;
 
 });

@@ -13,14 +13,17 @@ define(function (require) {
     constructor: function (itemList) {
       this.itemList = itemList;
 
+      // Bind an option to the render method. Subsequent calls to render will not change the contents of the
+      // #todo-list element, which contains all the individual item subviews
       this.render = this.render.bind(this, { ignoreSubtreeOf: '#todo-list' });
       this.render();
 
-      this.listenTo('input#toggle-all', 'change', this.onToggleAllChanged);
+      this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
 
       this.listenTo(itemList, 'change:length', this.render);
       this.listenTo(itemList, 'change:nCompleted', this.render);
-      this.listenTo(itemList, 'item:added', this.onListItemAdded);
+      this.listenTo(itemList, 'item:added', this.addItemView);
+      this.listenTo(this.children, 'item:removeItem', itemList.remove, itemList);
     },
 
     getHtml: function () {
@@ -30,15 +33,15 @@ define(function (require) {
       });
     },
 
-    onToggleAllChanged: function (ev) {
+    toggleAllItems: function (ev) {
       var completed = ev.target.checked;
       this.itemList.forEach(function (item) {
         item.completed = completed;
       });
     },
 
-    onListItemAdded: function (itemRecord) {
-      this.addChild(new ItemListRowView(this.itemList, itemRecord), this.$('#todo-list'));
+    addItemView: function (itemRecord) {
+      this.addChild(new ItemListRowView(itemRecord), this.$('#todo-list'));
     },
 
   });

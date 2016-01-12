@@ -14,7 +14,7 @@ define(function (require) {
 
       this.render();
 
-      this.listenTo('#new-todo', 'keydown', this.onInputElKeyDown);
+      this.listenTo('#new-todo', 'keydown', this.addItem);
       this.listenTo(itemList, 'item:added', this.render);
     },
 
@@ -22,7 +22,7 @@ define(function (require) {
       return templateHtml;
     },
 
-    onInputElKeyDown: function (ev) {
+    addItem: function (ev) {
       if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
       var itemText = ev.target.value.trim();
       itemText && this.itemList.push(new ItemRecord({ title: itemText }));

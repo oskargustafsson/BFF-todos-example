@@ -15,33 +15,29 @@ define(function (require) {
 
     constructor: function () {
       // Create an empty list of todo items
-      this.itemsList = new ItemList();
+      var itemsList = new ItemList();
 
       // Render this view; will set this.el to whatever is returned (and parsed) from getHtml()
       this.render();
 
       // Create all the subviews
-      this.addChild(new NewItemView(this.itemsList), this.el);
-      this.addChild(new ItemListView(this.itemsList), this.el);
-      this.addChild(new ItemActionsView(this.itemsList), this.el);
+      this.addChild(new NewItemView(itemsList), this.el);
+      this.addChild(new ItemListView(itemsList), this.el);
+      this.addChild(new ItemActionsView(itemsList), this.el);
 
       // Read stored items
       var savedItemsStr = localStorage[LOCAL_STORAGE_NS];
-      savedItemsStr && this.itemsList.pushAll(JSON.parse(savedItemsStr).map(function (itemData) {
-        return new ItemRecord(itemData);
-      }));
+      var itemDataToRecord = function (itemData) { return new ItemRecord(itemData); };
+      savedItemsStr && itemsList.pushAll(JSON.parse(savedItemsStr).map(itemDataToRecord));
 
       // Save the items whenever they are added, removed, or edited
-      this.listenTo(this.itemsList, 'change:length', this.saveToLocalStorage);
-      this.listenTo(this.itemsList, 'item:change', this.saveToLocalStorage);
+      var saveToLocalStorage = function () { localStorage[LOCAL_STORAGE_NS] = JSON.stringify(itemsList); };
+      this.listenTo(itemsList, 'change:length', saveToLocalStorage);
+      this.listenTo(itemsList, 'item:change', saveToLocalStorage);
     },
 
     getHtml: function () {
       return templateHtml;
-    },
-
-    saveToLocalStorage: function () {
-      localStorage[LOCAL_STORAGE_NS] = JSON.stringify(this.itemsList);
     },
 
   });
