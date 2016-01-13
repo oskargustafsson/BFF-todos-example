@@ -20,10 +20,9 @@ define(function (require) {
 
       this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
 
-      this.listenTo(itemList, 'change:length', this.render);
-      this.listenTo(itemList, 'change:nCompleted', this.render);
+      this.listenTo(itemList, [ 'change:length', 'change:nCompleted' ], this.render);
       this.listenTo(itemList, 'item:added', this.addItemView);
-      this.listenTo(this.children, 'item:removeItem', itemList.remove, itemList);
+      this.listenTo(itemList, 'item:requestRemove', itemList.remove, itemList);
     },
 
     getHtml: function () {
@@ -34,10 +33,7 @@ define(function (require) {
     },
 
     toggleAllItems: function (ev) {
-      var completed = ev.target.checked;
-      this.itemList.forEach(function (item) {
-        item.completed = completed;
-      });
+      this.itemList.forEach(function (item) { item.completed = ev.target.checked; });
     },
 
     addItemView: function (itemRecord) {

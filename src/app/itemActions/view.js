@@ -23,8 +23,7 @@ define(function (require) {
 
       this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
 
-      this.listenTo(itemList, 'change:length', this.render);
-      this.listenTo(itemList, 'change:nCompleted', this.render);
+      this.listenTo(itemList, [ 'change:length', 'change:nCompleted' ], this.render);
       this.listenTo(router, 'change:route', this.render);
     },
 

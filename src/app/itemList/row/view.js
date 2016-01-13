@@ -3,7 +3,6 @@ define(function (require) {
 
   var View = require('libs/bff/dev/view');
   var extend = require('libs/bff/dev/extend');
-  var eventEmitter = require('libs/bff/dev/event-emitter');
   var ItemListRowRecord = require('./record');
   var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
@@ -23,17 +22,16 @@ define(function (require) {
       this.render();
 
       this.listenTo('input.toggle', 'change', this.setItemCompletedState);
-      this.listenTo('input.edit', 'blur', this.leaveEditMode);
-      this.listenTo('input.edit', 'keydown', this.leaveEditMode);
-      this.listenTo('button.destroy', 'click', this.emit.bind(this, 'removeItem', this.itemRecord));
+      this.listenTo('input.edit', [ 'blur', 'keydown' ], this.leaveEditMode);
+      this.listenTo('button.destroy', 'click', this.removeItem);
       this.listenTo('label', 'dblclick', this.enterEditMode);
 
       this.listenTo(this.stateRecord, 'change:editing', this.updateItemTitle);
       this.listenTo(this.stateRecord, 'change:hidden', this.render);
-      this.listenTo(this.itemRecord, 'removed', this.destroy);
-      this.listenTo(this.itemRecord, 'change', this.render);
-      this.listenTo(this.itemRecord, 'change:completed', this.updateItemVisibility);
-      this.listenTo(this.itemRecord, 'change:title', this.removeEmptyItem);
+      this.listenTo(itemRecord, 'removed', this.destroy);
+      this.listenTo(itemRecord, 'change', this.render);
+      this.listenTo(itemRecord, 'change:completed', this.updateItemVisibility);
+      this.listenTo(itemRecord, 'change:title', this.removeEmptyItem);
       this.listenTo(router, 'change:route', this.updateItemVisibility);
 
       this.updateItemVisibility();
@@ -83,13 +81,15 @@ define(function (require) {
       this.render();
     },
 
-    removeEmptyItem: function (title, prevTitle, item) {
-      title || this.emit('removeItem', item);
+    removeItem: function () {
+      this.itemRecord.emit('requestRemove', this.itemRecord);
+    },
+
+    removeEmptyItem: function () {
+      this.itemRecord.title || this.removeItem();
     }
 
   });
-
-  extend(ItemListRowView.prototype, eventEmitter);
 
   return ItemListRowView;
 
