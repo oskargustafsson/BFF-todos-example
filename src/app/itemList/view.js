@@ -5,14 +5,13 @@ define(function (require) {
   var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
   var ItemListRowView = require('./row/view');
+  var items = require('models/items');
 
   var template = makeTemplate(templateHtml);
 
   return View.prototype.makeSubclass({
 
-    constructor: function (items) {
-      this.items = items;
-
+    constructor: function () {
       // Bind an option to the render method. Subsequent calls to render will not change the contents of the
       // #todo-list element, which contains all the individual item subviews
       this.render = this.render.bind(this, { ignoreSubtreeOf: '#todo-list' });
@@ -27,14 +26,14 @@ define(function (require) {
 
     getHtml: function () {
       return template({
-        isListEmpty: this.items.length === 0,
-        isAllCompleted: this.items.nCompleted === this.items.length,
+        isListEmpty: items.length === 0,
+        isAllCompleted: items.nCompleted === items.length,
       });
     },
 
     toggleAllItems: function (ev) {
       var completed = ev.target.checked;
-      this.items.forEach(function (item) { item.completed = completed; });
+      items.forEach(function (item) { item.completed = completed; });
     },
 
     addItemView: function (itemRecord) {

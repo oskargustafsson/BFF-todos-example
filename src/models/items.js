@@ -3,7 +3,7 @@ define(function (require) {
 
   var List = require('libs/bff/dev/list');
 
-  return List.prototype.bindSchema({
+  var ItemList = List.prototype.bindSchema({
 
     nCompleted: {
       getter: function () {
@@ -20,5 +20,7 @@ define(function (require) {
     },
 
   });
+
+  return new ItemList();
 
 });

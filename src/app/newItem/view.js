@@ -3,13 +3,14 @@ define(function (require) {
 
   var View = require('libs/bff/dev/view');
   var templateHtml = require('text!./template.html');
-  var ItemRecord = require('entities/item');
+  var ItemRecord = require('models/item');
+  var items = require('models/items');
 
   var ENTER = 13;
 
   return View.prototype.makeSubclass({
 
-    constructor: function (items) {
+    constructor: function () {
       this.render();
       this.listenTo('#new-todo', 'keydown', this.addItem, items);
       this.listenTo(items, 'item:added', this.render);

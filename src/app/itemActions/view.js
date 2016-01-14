@@ -5,6 +5,7 @@ define(function (require) {
   var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
   var router = require('app/router');
+  var items = require('models/items');
 
   var template = makeTemplate(templateHtml);
 
@@ -16,9 +17,7 @@ define(function (require) {
 
   return View.prototype.makeSubclass({
 
-    constructor: function (items) {
-      this.items = items;
-
+    constructor: function () {
       this.render();
 
       this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
@@ -31,16 +30,16 @@ define(function (require) {
 
     getHtml: function () {
       return template({
-        nTodosLeft: this.items.nUncompleted,
-        isListEmpty: this.items.length === 0,
-        isNoneCompleted: this.items.nCompleted === 0,
+        nTodosLeft: items.nUncompleted,
+        isListEmpty: items.length === 0,
+        isNoneCompleted: items.nCompleted === 0,
         currentPath: router.route,
         filters: FILTERS,
       });
     },
 
     onClearButtonClicked: function () {
-      this.items.filterMut(function (item) { return !item.completed; });
+      items.filterMut(function (item) { return !item.completed; });
     },
 
   });
