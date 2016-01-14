@@ -9,10 +9,10 @@ define(function (require) {
 
   return View.prototype.makeSubclass({
 
-    constructor: function (itemList) {
+    constructor: function (items) {
       this.render();
-      this.listenTo('#new-todo', 'keydown', this.addItem, itemList);
-      this.listenTo(itemList, 'item:added', this.render);
+      this.listenTo('#new-todo', 'keydown', this.addItem, items);
+      this.listenTo(items, 'item:added', this.render);
     },
 
     getHtml: function () {

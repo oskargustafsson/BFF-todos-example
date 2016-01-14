@@ -15,23 +15,23 @@ define(function (require) {
 
     constructor: function () {
       // Create an empty list of todo items
-      var itemList = new ItemList();
+      var items = new ItemList();
 
       // Render this view; will set this.el to whatever is returned (and parsed) from getHtml()
       this.render();
 
       // Create all the subviews
-      this.addChild(new NewItemView(itemList), this.el);
-      this.addChild(new ItemListView(itemList), this.el);
-      this.addChild(new ItemActionsView(itemList), this.el);
+      this.addChild(new NewItemView(items), this.el);
+      this.addChild(new ItemListView(items), this.el);
+      this.addChild(new ItemActionsView(items), this.el);
 
       // Read stored items
       var savedItemsStr = localStorage[LOCAL_STORAGE_NS];
       var itemDataToRecord = function (itemData) { return new ItemRecord(itemData); };
-      savedItemsStr && itemList.pushAll(JSON.parse(savedItemsStr).map(itemDataToRecord));
+      savedItemsStr && items.pushAll(JSON.parse(savedItemsStr).map(itemDataToRecord));
 
       // Save the items whenever they are added, removed, or edited
-      this.listenTo(itemList, [ 'change:length', 'item:change' ], this.saveToLocalStorage, itemList);
+      this.listenTo(items, [ 'change:length', 'item:change' ], this.saveToLocalStorage, items);
     },
 
     getHtml: function () {

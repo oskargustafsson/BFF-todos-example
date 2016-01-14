@@ -10,8 +10,8 @@ define(function (require) {
 
   return View.prototype.makeSubclass({
 
-    constructor: function (itemList) {
-      this.itemList = itemList;
+    constructor: function (items) {
+      this.items = items;
 
       // Bind an option to the render method. Subsequent calls to render will not change the contents of the
       // #todo-list element, which contains all the individual item subviews
@@ -20,20 +20,20 @@ define(function (require) {
 
       this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
 
-      this.listenTo(itemList, [ 'change:length', 'change:nCompleted' ], this.render);
-      this.listenTo(itemList, 'item:added', this.addItemView);
-      this.listenTo(itemList, 'item:requestRemove', itemList.remove, itemList);
+      this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
+      this.listenTo(items, 'item:added', this.addItemView);
+      this.listenTo(items, 'item:requestRemove', items.remove, items);
     },
 
     getHtml: function () {
       return template({
-        isListEmpty: this.itemList.length === 0,
-        isAllCompleted: this.itemList.nCompleted === this.itemList.length,
+        isListEmpty: this.items.length === 0,
+        isAllCompleted: this.items.nCompleted === this.items.length,
       });
     },
 
     toggleAllItems: function (ev) {
-      this.itemList.forEach(function (item) { item.completed = ev.target.checked; });
+      this.items.forEach(function (item) { item.completed = ev.target.checked; });
     },
 
     addItemView: function (itemRecord) {

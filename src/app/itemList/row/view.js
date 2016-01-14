@@ -15,9 +15,9 @@ define(function (require) {
 
   var ItemListRowView = View.prototype.makeSubclass({
 
-    constructor: function (itemRecord) {
-      this.itemRecord = itemRecord;
-      this.stateRecord = new ItemListRowRecord();
+    constructor: function (item) {
+      this.item = item;
+      this.viewState = new ItemListRowRecord();
 
       this.render();
 
@@ -26,67 +26,58 @@ define(function (require) {
       this.listenTo('button.destroy', 'click', this.removeItem);
       this.listenTo('label', 'dblclick', this.enterEditMode);
 
-      this.listenTo(this.stateRecord, 'change:editing', this.updateItemTitle);
-      this.listenTo(this.stateRecord, 'change:hidden', this.render);
-      this.listenTo(itemRecord, 'removed', this.destroy);
-      this.listenTo(itemRecord, 'change', this.render);
-      this.listenTo(itemRecord, 'change:completed', this.updateItemVisibility);
-      this.listenTo(itemRecord, 'change:title', this.removeEmptyItem);
+      this.listenTo([ item, this.viewState ], 'change', this.render);
+      this.listenTo(item, 'removed', this.destroy);
+      this.listenTo(item, 'change:title', this.removeEmptyItem);
+      this.listenTo(item, 'change:completed', this.updateItemVisibility);
       this.listenTo(router, 'change:route', this.updateItemVisibility);
 
       this.updateItemVisibility();
     },
 
     render: function () {
-      View.prototype.render.apply(this, arguments);
-      this.stateRecord.editing && this.$('input.edit').focus();
+      View.prototype.render.call(this, { ignoreSubtreeOf: 'input.edit' });
+      this.viewState.editing && this.$('input.edit').focus();
     },
 
     getHtml: function () {
-      return template(extend(this.itemRecord.toJSON(), this.stateRecord.toJSON()));
+      return template(extend(this.item.toJSON(), this.viewState.toJSON()));
     },
 
     updateItemVisibility: function () {
       switch (router.route) {
-      case 'active': this.stateRecord.hidden = this.itemRecord.completed; break;
-      case 'completed': this.stateRecord.hidden = !this.itemRecord.completed; break;
-      default: this.stateRecord.hidden = false; break;
+      case 'active': this.viewState.hidden = this.item.completed; break;
+      case 'completed': this.viewState.hidden = !this.item.completed; break;
+      default: this.viewState.hidden = false; break;
       }
     },
 
     setItemCompletedState: function (ev) {
-      this.itemRecord.completed = ev.target.checked;
+      this.item.completed = ev.target.checked;
     },
 
     enterEditMode: function () {
-      this.stateRecord.saveOnExit = true;
-      this.stateRecord.editing = true;
+      this.$('input.edit').value = this.item.title;
+      this.viewState.editing = true;
     },
 
     leaveEditMode: function (ev) {
       if (ev.type === 'blur') { ev.keyCode = ENTER_KEY; }
       switch (ev.which || ev.keyCode) {
-      case ESCAPE_KEY:
-        this.stateRecord.saveOnExit = false;
-        /* falls through */
       case ENTER_KEY:
-        this.stateRecord.editing = false;
+        this.item.title = this.$('input.edit').value;
+        /* falls through */
+      case ESCAPE_KEY:
+        this.viewState.editing = false;
       }
-    },
-
-    updateItemTitle: function (editing) {
-      if (!editing && this.stateRecord.saveOnExit) {
-        this.itemRecord.title = this.$('input.edit').value.trim();
-      }
-      this.render();
     },
 
     removeItem: function () {
-      this.itemRecord.emit('requestRemove', this.itemRecord);
+      this.item.emit('requestRemove', this.item);
     },
 
     removeEmptyItem: function () {
-      this.itemRecord.title || this.removeItem();
+      this.item.title || this.removeItem();
     }
 
   });
