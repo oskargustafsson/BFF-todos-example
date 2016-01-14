@@ -5,9 +5,9 @@ define(function (require) {
   var ItemRecord = require('models/item');
   var items = require('models/items');
   var templateHtml = require('text!./template.html');
-  var NewItemView = require('./newItem/view');
-  var ItemListView = require('./itemList/view');
-  var ItemActionsView = require('./itemActions/view');
+  var NewItemView = require('./new/view');
+  var ItemListView = require('./list/view');
+  var ItemActionsView = require('./actions/view');
 
   var LOCAL_STORAGE_NS = 'todos-bff';
 

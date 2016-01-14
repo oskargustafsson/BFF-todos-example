@@ -3,7 +3,7 @@ define(function (require) {
 
   var View = require('libs/bff/dev/view');
   var extend = require('libs/bff/dev/extend');
-  var ItemListRowRecord = require('./record');
+  var ItemListRowRecord = require('./model');
   var makeTemplate = require('lodash/string/template');
   var templateHtml = require('text!./template.html');
   var router = require('app/router');
