@@ -1,17 +1,17 @@
 <footer id="footer" class="<%= isListEmpty ? 'hidden' : '' %>">
-  <span id="todo-count">
-    <strong><%= nTodosLeft %></strong> <%= 'item' + (nTodosLeft === 1 ? '' : 's') + ' left' %>
-  </span>
-  <ul id="filters">
-    <% for (var filterPath in filters) { %>
-    <li>
-      <a href="#/<%= filterPath %>" class="<%= filterPath === currentPath ? 'selected' : '' %>">
-        <%= filters[filterPath] %>
-      </a>
-    </li>
-    <% } %>
-  </ul>
-  <button id="clear-completed" class="<%= isNoneCompleted ? 'hidden' : '' %>">
-    Clear completed
-  </button>
+	<span id="todo-count">
+		<strong><%= nTodosLeft %></strong> <%= 'item' + (nTodosLeft === 1 ? '' : 's') + ' left' %>
+	</span>
+	<ul id="filters">
+		<% for (var filterPath in filters) { %>
+		<li>
+			<a href="#/<%= filterPath %>" class="<%= filterPath === currentPath ? 'selected' : '' %>">
+				<%= filters[filterPath] %>
+			</a>
+		</li>
+		<% } %>
+	</ul>
+	<button id="clear-completed" class="<%= isNoneCompleted ? 'hidden' : '' %>">
+		Clear completed
+	</button>
 </footer>

@@ -1,16 +1,16 @@
 /* global Router */
 define(function (require) {
-  'use strict';
+	'use strict';
 
-  var Record = require('libs/bff/dev/record');
+	var Record = require('libs/bff/dev/record');
 
-  var router = new Record({ route: 'string' });
+	var router = new Record({ route: 'string' });
 
-  // Init Director Router
-  var directorRouter = new Router();
-  directorRouter.on(/(.*)/, function (route) { router.route = route; });
-  directorRouter.init();
+	// Init Director Router
+	var directorRouter = new Router();
+	directorRouter.on(/(.*)/, function (route) { router.route = route; });
+	directorRouter.init();
 
-  return router;
+	return router;
 
 });

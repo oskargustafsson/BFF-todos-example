@@ -1,47 +1,47 @@
 define(function (require) {
-  'use strict';
+	'use strict';
 
-  var View = require('libs/bff/dev/view');
-  var makeTemplate = require('lodash/string/template');
-  var templateHtml = require('text!./template.html');
-  var router = require('app/router');
-  var items = require('models/items');
+	var View = require('libs/bff/dev/view');
+	var makeTemplate = require('lodash/string/template');
+	var templateHtml = require('text!./template.html');
+	var router = require('app/router');
+	var items = require('models/items');
 
-  var template = makeTemplate(templateHtml);
+	var template = makeTemplate(templateHtml);
 
-  var FILTERS = {
-    '': 'All',
-    'active': 'Active',
-    'completed': 'Completed'
-  };
+	var FILTERS = {
+		'': 'All',
+		'active': 'Active',
+		'completed': 'Completed'
+	};
 
-  return View.prototype.makeSubclass({
+	return View.prototype.makeSubclass({
 
-    constructor: function () {
-      this.render();
+		constructor: function () {
+			this.render();
 
-      this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
+			this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
 
-      this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
-      this.listenTo(router, 'change:route', this.render);
-      // TODO: replace with following when BFF List bug has been fixed
-      // this.listenTo([ router items ], 'change', this.render);
-    },
+			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
+			this.listenTo(router, 'change:route', this.render);
+			// TODO: replace with following when BFF List bug has been fixed
+			// this.listenTo([ router items ], 'change', this.render);
+		},
 
-    getHtml: function () {
-      return template({
-        nTodosLeft: items.nUncompleted,
-        isListEmpty: items.length === 0,
-        isNoneCompleted: items.nCompleted === 0,
-        currentPath: router.route,
-        filters: FILTERS,
-      });
-    },
+		getHtml: function () {
+			return template({
+				nTodosLeft: items.nUncompleted,
+				isListEmpty: items.length === 0,
+				isNoneCompleted: items.nCompleted === 0,
+				currentPath: router.route,
+				filters: FILTERS,
+			});
+		},
 
-    onClearButtonClicked: function () {
-      items.filterMut(function (item) { return !item.completed; });
-    },
+		onClearButtonClicked: function () {
+			items.filterMut(function (item) { return !item.completed; });
+		},
 
-  });
+	});
 
 });

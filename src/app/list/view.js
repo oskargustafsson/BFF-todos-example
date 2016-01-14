@@ -1,45 +1,45 @@
 define(function (require) {
-  'use strict';
+	'use strict';
 
-  var View = require('libs/bff/dev/view');
-  var makeTemplate = require('lodash/string/template');
-  var templateHtml = require('text!./template.html');
-  var ItemListRowView = require('./row/view');
-  var items = require('models/items');
+	var View = require('libs/bff/dev/view');
+	var makeTemplate = require('lodash/string/template');
+	var templateHtml = require('text!./template.html');
+	var ItemListRowView = require('./row/view');
+	var items = require('models/items');
 
-  var template = makeTemplate(templateHtml);
+	var template = makeTemplate(templateHtml);
 
-  return View.prototype.makeSubclass({
+	return View.prototype.makeSubclass({
 
-    constructor: function () {
-      // Bind an option to the render method. Subsequent calls to render will not change the contents of the
-      // #todo-list element, which contains all the individual item subviews
-      this.render = this.render.bind(this, { ignoreSubtreeOf: '#todo-list' });
-      this.render();
+		constructor: function () {
+			// Bind an option to the render method. Subsequent calls to render will not change the contents of the
+			// #todo-list element, which contains all the individual item subviews
+			this.render = this.render.bind(this, { ignoreSubtreeOf: '#todo-list' });
+			this.render();
 
-      this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
+			this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
 
-      this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
-      this.listenTo(items, 'item:added', this.addItemView);
-      this.listenTo(items, 'item:requestRemove', items.remove, items);
-    },
+			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
+			this.listenTo(items, 'item:added', this.addItemView);
+			this.listenTo(items, 'item:requestRemove', items.remove, items);
+		},
 
-    getHtml: function () {
-      return template({
-        isListEmpty: items.length === 0,
-        isAllCompleted: items.nCompleted === items.length,
-      });
-    },
+		getHtml: function () {
+			return template({
+				isListEmpty: items.length === 0,
+				isAllCompleted: items.nCompleted === items.length,
+			});
+		},
 
-    toggleAllItems: function (ev) {
-      var completed = ev.target.checked;
-      items.forEach(function (item) { item.completed = completed; });
-    },
+		toggleAllItems: function (ev) {
+			var completed = ev.target.checked;
+			items.forEach(function (item) { item.completed = completed; });
+		},
 
-    addItemView: function (itemRecord) {
-      this.addChild(new ItemListRowView(itemRecord), this.$('#todo-list'));
-    },
+		addItemView: function (itemRecord) {
+			this.addChild(new ItemListRowView(itemRecord), this.$('#todo-list'));
+		},
 
-  });
+	});
 
 });

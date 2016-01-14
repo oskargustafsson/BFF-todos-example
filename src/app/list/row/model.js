@@ -1,18 +1,18 @@
 define(function (require) {
-  'use strict';
+	'use strict';
 
-  var Record = require('libs/bff/dev/record');
+	var Record = require('libs/bff/dev/record');
 
-  return Record.prototype.bindSchema({
+	return Record.prototype.bindSchema({
 
-    visible: 'boolean',
+		visible: 'boolean',
 
-    editing: {
-      type: 'boolean',
-      defaultValue: false,
-      forbiddenValues: [ undefined ],
-    },
+		editing: {
+			type: 'boolean',
+			defaultValue: false,
+			forbiddenValues: [ undefined ],
+		},
 
-  });
+	});
 
 });
