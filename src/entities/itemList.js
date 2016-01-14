@@ -15,10 +15,8 @@ define(function (require) {
     },
 
     nUncompleted: {
-      getter: function () {
-        return this.length - this.nCompleted;
-      },
-      dependencies: [ 'length', 'nCompleted' ],
+      getter: function () { return this.length - this.nCompleted; },
+      // No dependencies specified -> will not trigger any events
     },
 
   });

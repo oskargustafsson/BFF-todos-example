@@ -33,7 +33,8 @@ define(function (require) {
     },
 
     toggleAllItems: function (ev) {
-      this.items.forEach(function (item) { item.completed = ev.target.checked; });
+      var completed = ev.target.checked;
+      this.items.forEach(function (item) { item.completed = completed; });
     },
 
     addItemView: function (itemRecord) {

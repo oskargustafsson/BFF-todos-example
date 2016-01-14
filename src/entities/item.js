@@ -5,16 +5,18 @@ define(function (require) {
 
   return Record.prototype.bindSchema({
 
-    title: {
-      type: 'string',
-      forbiddenValues: [ undefined ],
-    },
+    title: 'string',
 
     completed: {
       type: 'boolean',
       defaultValue: false,
       forbiddenValues: [ undefined ],
     },
+
+    active: {
+      getter: function () { return !this.completed; },
+      setter: false,
+    }
 
   });
 

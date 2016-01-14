@@ -45,11 +45,7 @@ define(function (require) {
     },
 
     updateItemVisibility: function () {
-      switch (router.route) {
-      case 'active': this.viewState.hidden = this.item.completed; break;
-      case 'completed': this.viewState.hidden = !this.item.completed; break;
-      default: this.viewState.hidden = false; break;
-      }
+      this.viewState.visible = !router.route || this.item[router.route];
     },
 
     setItemCompletedState: function (ev) {

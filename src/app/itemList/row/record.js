@@ -5,9 +5,9 @@ define(function (require) {
 
   return Record.prototype.bindSchema({
 
-    hidden: {
+    visible: {
       type: 'boolean',
-      defaultValue: false,
+      defaultValue: true,
       forbiddenValues: [ undefined ],
     },
 
