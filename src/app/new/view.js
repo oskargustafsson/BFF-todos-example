@@ -12,7 +12,9 @@ define(function (require) {
 
 		constructor: function () {
 			this.render();
+			// DOM change listeners
 			this.listenTo('#new-todo', 'keydown', this.addItem, items);
+			// Data change listeners
 			this.listenTo(items, 'item:added', this.render);
 		},
 

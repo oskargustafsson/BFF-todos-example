@@ -16,9 +16,9 @@ define(function (require) {
 			// #todo-list element, which contains all the individual item subviews
 			this.render = this.render.bind(this, { ignoreSubtreeOf: '#todo-list' });
 			this.render();
-
+			// DOM change listeners
 			this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
-
+			// Data change listeners
 			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
 			this.listenTo(items, 'item:added', this.addItemView);
 			this.listenTo(items, 'item:requestRemove', items.remove, items);
@@ -27,7 +27,7 @@ define(function (require) {
 		getHtml: function () {
 			return template({
 				isListEmpty: items.length === 0,
-				isAllCompleted: items.nCompleted === items.length,
+				isAllCompleted: items.nUncompleted === 0,
 			});
 		},
 

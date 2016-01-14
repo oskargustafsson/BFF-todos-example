@@ -20,20 +20,23 @@ define(function (require) {
 			this.addChild(new NewItemView());
 			this.addChild(new ItemListView());
 			this.addChild(new ItemActionsView());
-			// Read stored items
-			var savedItemsStr = localStorage[LOCAL_STORAGE_NS];
-			var itemDataToRecord = function (itemData) { return new ItemRecord(itemData); };
-			savedItemsStr && items.pushAll(JSON.parse(savedItemsStr).map(itemDataToRecord));
-			// Save the items to LocalStorage whenever they are added, removed, or updated
-			this.listenTo(items, [ 'change:length', 'item:change' ], this.saveToLocalStorage, items);
+			// Load saved items and set up data change listeners
+			this.loadItems();
+			this.listenTo(items, [ 'change:length', 'item:change' ], this.saveItems);
 		},
 
 		getHtml: function () {
 			return templateHtml;
 		},
 
-		saveToLocalStorage: function () {
-			localStorage[LOCAL_STORAGE_NS] = JSON.stringify(this);
+		loadItems: function () {
+			var savedItemsStr = localStorage[LOCAL_STORAGE_NS];
+			var itemDataToModel = function (itemData) { return new ItemRecord(itemData); };
+			savedItemsStr && items.pushAll(JSON.parse(savedItemsStr).map(itemDataToModel));
+		},
+
+		saveItems: function () {
+			localStorage[LOCAL_STORAGE_NS] = JSON.stringify(items);
 		},
 
 	});

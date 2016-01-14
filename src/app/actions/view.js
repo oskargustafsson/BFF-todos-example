@@ -19,9 +19,9 @@ define(function (require) {
 
 		constructor: function () {
 			this.render();
-
+			// DOM change listeners
 			this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
-
+			// Data change listeners
 			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
 			this.listenTo(router, 'change:route', this.render);
 			// TODO: replace with following when BFF List bug has been fixed

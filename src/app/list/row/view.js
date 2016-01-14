@@ -17,15 +17,14 @@ define(function (require) {
 		constructor: function (item) {
 			this.item = item;
 			this.viewState = new ItemListRowRecord({ visible: this.isVisible() });
-
 			this.render();
-
+			// DOM change listeners
 			this.listenTo('input.toggle', 'change', this.setItemCompletedState);
 			this.listenTo('input.edit', 'keydown', this.onKeyDown);
 			this.listenTo('input.edit', 'blur', this.leaveEditMode.bind(this, true));
 			this.listenTo('button.destroy', 'click', this.removeItem);
 			this.listenTo('label', 'dblclick', this.enterEditMode);
-
+			// Data change listeners
 			this.listenTo([ item, this.viewState ], 'change', this.render);
 			this.listenTo(item, 'removed', this.destroy);
 			this.listenTo(item, 'change:title', this.removeEmptyItem);
