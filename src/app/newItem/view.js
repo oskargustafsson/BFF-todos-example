@@ -5,7 +5,7 @@ define(function (require) {
   var templateHtml = require('text!./template.html');
   var ItemRecord = require('entities/item');
 
-  var ENTER_KEY = 13;
+  var ENTER = 13;
 
   return View.prototype.makeSubclass({
 
@@ -20,7 +20,7 @@ define(function (require) {
     },
 
     addItem: function (ev) {
-      if ((ev.which || ev.keyCode) !== ENTER_KEY) { return; }
+      if (ev.which !== ENTER) { return; }
       var itemText = ev.target.value.trim();
       itemText && this.push(new ItemRecord({ title: itemText }));
     },

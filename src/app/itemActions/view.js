@@ -16,29 +16,31 @@ define(function (require) {
 
   return View.prototype.makeSubclass({
 
-    constructor: function (itemList) {
-      this.itemList = itemList;
+    constructor: function (items) {
+      this.items = items;
 
       this.render();
 
       this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
 
-      this.listenTo(itemList, [ 'change:length', 'change:nCompleted' ], this.render);
+      this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
       this.listenTo(router, 'change:route', this.render);
+      // TODO: replace with following when BFF List bug has been fixed
+      // this.listenTo([ router items ], 'change', this.render);
     },
 
     getHtml: function () {
       return template({
-        nTodosLeft: this.itemList.nUncompleted,
-        isListEmpty: this.itemList.length === 0,
-        isNoneCompleted: this.itemList.nCompleted === 0,
+        nTodosLeft: this.items.nUncompleted,
+        isListEmpty: this.items.length === 0,
+        isNoneCompleted: this.items.nCompleted === 0,
         currentPath: router.route,
         filters: FILTERS,
       });
     },
 
     onClearButtonClicked: function () {
-      this.itemList.filterMut(function (item) { return !item.completed; });
+      this.items.filterMut(function (item) { return !item.completed; });
     },
 
   });

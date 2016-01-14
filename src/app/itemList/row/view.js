@@ -10,19 +10,19 @@ define(function (require) {
 
   var template = makeTemplate(templateHtml);
 
-  var ENTER_KEY = 13;
-  var ESCAPE_KEY = 27;
+  var ENTER = 13, ESCAPE = 27;
 
   var ItemListRowView = View.prototype.makeSubclass({
 
     constructor: function (item) {
       this.item = item;
-      this.viewState = new ItemListRowRecord();
+      this.viewState = new ItemListRowRecord({ visible: this.isVisible() });
 
       this.render();
 
       this.listenTo('input.toggle', 'change', this.setItemCompletedState);
-      this.listenTo('input.edit', [ 'blur', 'keydown' ], this.leaveEditMode);
+      this.listenTo('input.edit', 'keydown', this.onKeyDown);
+      this.listenTo('input.edit', 'blur', this.leaveEditMode.bind(this, true));
       this.listenTo('button.destroy', 'click', this.removeItem);
       this.listenTo('label', 'dblclick', this.enterEditMode);
 
@@ -31,8 +31,6 @@ define(function (require) {
       this.listenTo(item, 'change:title', this.removeEmptyItem);
       this.listenTo(item, 'change:completed', this.updateItemVisibility);
       this.listenTo(router, 'change:route', this.updateItemVisibility);
-
-      this.updateItemVisibility();
     },
 
     render: function () {
@@ -44,8 +42,12 @@ define(function (require) {
       return template(extend(this.item.toJSON(), this.viewState.toJSON()));
     },
 
+    isVisible: function () {
+      return !router.route || this.item[router.route];
+    },
+
     updateItemVisibility: function () {
-      this.viewState.visible = !router.route || this.item[router.route];
+      this.viewState.visible = this.isVisible();
     },
 
     setItemCompletedState: function (ev) {
@@ -57,14 +59,15 @@ define(function (require) {
       this.viewState.editing = true;
     },
 
-    leaveEditMode: function (ev) {
-      if (ev.type === 'blur') { ev.keyCode = ENTER_KEY; }
-      switch (ev.which || ev.keyCode) {
-      case ENTER_KEY:
-        this.item.title = this.$('input.edit').value;
-        /* falls through */
-      case ESCAPE_KEY:
-        this.viewState.editing = false;
+    leaveEditMode: function (save) {
+      if (save) { this.item.title = this.$('input.edit').value; }
+      this.viewState.editing = false;
+    },
+
+    onKeyDown: function (ev) {
+      switch (ev.which) {
+      case ENTER: this.leaveEditMode(true); break;
+      case ESCAPE: this.leaveEditMode(false); break;
       }
     },
 
