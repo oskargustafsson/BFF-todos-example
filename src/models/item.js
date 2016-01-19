@@ -10,7 +10,6 @@ define(function (require) {
 		completed: {
 			type: 'boolean',
 			defaultValue: false,
-			forbiddenValues: [ undefined ],
 		},
 
 		active: {

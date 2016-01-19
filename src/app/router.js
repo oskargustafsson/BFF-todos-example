@@ -4,7 +4,12 @@ define(function (require) {
 
 	var Record = require('libs/bff/dev/record');
 
-	var router = new Record({ route: 'string' });
+	var router = new Record({
+		route: {
+			type: 'string',
+			defaultValue: '',
+		},
+	});
 
 	// Init Director Router
 	var directorRouter = new Router();

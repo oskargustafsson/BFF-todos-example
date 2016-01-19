@@ -14,7 +14,7 @@ define(function (require) {
 			dependencies: [ 'length', 'item:completed' ],
 		},
 
-		nUncompleted: {
+		nActive: {
 			getter: function () { return this.length - this.nCompleted; },
 			// No dependencies specified -> will not trigger any events
 		},

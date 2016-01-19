@@ -22,15 +22,12 @@ define(function (require) {
 			// DOM change listeners
 			this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
 			// Data change listeners
-			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
-			this.listenTo(router, 'change:route', this.render);
-			// TODO: replace with following when BFF List bug has been fixed
-			// this.listenTo([ router items ], 'change', this.render);
+			this.listenTo([ router, items ], 'change', this.render);
 		},
 
 		getHtml: function () {
 			return template({
-				nTodosLeft: items.nUncompleted,
+				nTodosLeft: items.nActive,
 				isListEmpty: items.length === 0,
 				isNoneCompleted: items.nCompleted === 0,
 				currentPath: router.route,
@@ -39,6 +36,7 @@ define(function (require) {
 		},
 
 		onClearButtonClicked: function () {
+			// Remove all the completed items from the items list
 			items.filterMut(function (item) { return !item.completed; });
 		},
 

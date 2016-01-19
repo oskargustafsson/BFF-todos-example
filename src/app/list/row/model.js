@@ -10,7 +10,6 @@ define(function (require) {
 		editing: {
 			type: 'boolean',
 			defaultValue: false,
-			forbiddenValues: [ undefined ],
 		},
 
 	});

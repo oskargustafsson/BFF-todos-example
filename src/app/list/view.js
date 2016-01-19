@@ -27,7 +27,7 @@ define(function (require) {
 		getHtml: function () {
 			return template({
 				isListEmpty: items.length === 0,
-				isAllCompleted: items.nUncompleted === 0,
+				isAllCompleted: items.nActive === 0,
 			});
 		},
 
