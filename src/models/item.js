@@ -1,7 +1,7 @@
 define(function (require) {
 	'use strict';
 
-	var Record = require('libs/bff/dev/record');
+	var Record = require('bff/record');
 
 	return Record.withProperties({
 

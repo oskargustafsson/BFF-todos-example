@@ -1,7 +1,7 @@
 define(function (require) {
 	'use strict';
 
-	var View = require('libs/bff/dev/view');
+	var View = require('bff/view');
 	var makeTemplate = require('lodash/string/template');
 	var templateHtml = require('text!./template.html');
 	var ItemListRowView = require('./row/view');

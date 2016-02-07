@@ -1,8 +1,8 @@
 define(function (require) {
 	'use strict';
 
-	var View = require('libs/bff/dev/view');
-	var extend = require('libs/bff/dev/extend');
+	var View = require('bff/view');
+	var extend = require('bff/extend');
 	var ItemListRowRecord = require('./model');
 	var makeTemplate = require('lodash/string/template');
 	var templateHtml = require('text!./template.html');

@@ -1,7 +1,7 @@
 define(function (require) {
 	'use strict';
 
-	var View = require('libs/bff/dev/view');
+	var View = require('bff/view');
 	var ItemRecord = require('models/item');
 	var items = require('models/items');
 	var templateHtml = require('text!./template.html');
