@@ -3,7 +3,7 @@ define(function (require) {
 
 	var Record = require('libs/bff/dev/record');
 
-	return Record.prototype.bindSchema({
+	return Record.withProperties({
 
 		title: 'string',
 
