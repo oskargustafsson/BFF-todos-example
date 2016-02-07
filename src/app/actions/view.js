@@ -22,7 +22,7 @@ define(function (require) {
 			// DOM change listeners
 			this.listenTo('#clear-completed', 'click', this.onClearButtonClicked);
 			// Data change listeners
-			this.listenTo([ router, items ], 'change', this.render);
+			this.listenTo([ router, items ], 'change', this.requestRender);
 		},
 
 		getHtml: function () {

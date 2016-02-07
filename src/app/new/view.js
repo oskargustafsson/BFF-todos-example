@@ -15,7 +15,7 @@ define(function (require) {
 			// DOM change listeners
 			this.listenTo('#new-todo', 'keydown', this.addItem, items);
 			// Data change listeners
-			this.listenTo(items, 'item:added', this.render);
+			this.listenTo(items, 'item:added', this.requestRender);
 		},
 
 		getHtml: function () {

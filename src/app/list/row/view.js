@@ -25,7 +25,7 @@ define(function (require) {
 			this.listenTo('button.destroy', 'click', this.removeItem);
 			this.listenTo('label', 'dblclick', this.enterEditMode);
 			// Data change listeners
-			this.listenTo([ item, this.viewState ], 'change', this.render);
+			this.listenTo([ item, this.viewState ], 'change', this.requestRender);
 			this.listenTo(item, 'removed', this.destroy);
 			this.listenTo(item, 'change:title', this.removeEmptyItem);
 			this.listenTo(item, 'change:completed', this.updateItemVisibility);

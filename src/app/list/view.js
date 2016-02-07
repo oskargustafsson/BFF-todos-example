@@ -19,7 +19,7 @@ define(function (require) {
 			// DOM change listeners
 			this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
 			// Data change listeners
-			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.render);
+			this.listenTo(items, [ 'change:length', 'change:nCompleted' ], this.requestRender);
 			this.listenTo(items, 'item:added', this.addItemView);
 			this.listenTo(items, 'item:requestRemove', items.remove, items);
 		},
