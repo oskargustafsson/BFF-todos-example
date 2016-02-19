@@ -46,7 +46,7 @@ define(
 		},
 
 		addItemView: function (itemRecord) {
-			this.addChild(new RowView(itemRecord), this.$('#todo-list'));
+			this.$('#todo-list').appendChild(new RowView(itemRecord).el);
 		},
 
 		saveItems: function () {
