@@ -3,7 +3,7 @@
 	"dependencies": {
 		"bff-lib": "*",
 		"director": "^1.2.8",
-		"lodash-amd": "^3.10.1",
+		"lodash-amd": "^4.5.0",
 		"requirejs": "^2.1.22",
 		"requirejs-text": "^2.0.12",
 		"todomvc-app-css": "^1.0.0",

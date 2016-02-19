@@ -17,9 +17,7 @@
   "disallowMultipleLineStrings": true,
   "disallowMultipleLineBreaks": true,
   "validateLineBreaks": "LF",
-  "disallowMixedSpacesAndTabs": true,
   "disallowKeywordsOnNewLine": [ "else" ],
   "requireLineFeedAtFileEnd": true,
-  "maximumLineLength": 120,
   "excludeFiles": ["node_modules/**", "bower_components/**"]
 }

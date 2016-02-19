@@ -1,8 +1,7 @@
 /* global Router */
-define(function (require) {
-	'use strict';
+define([ 'bff/record' ], function (Record) {
 
-	var Record = require('bff/record');
+	'use strict';
 
 	var RouterRecord = Record.withProperties({ route: 'string' });
 	var routerRecord = new RouterRecord({ route: '' });

@@ -1,21 +1,14 @@
-define(function (require) {
-	'use strict';
+define([ 'bff/record' ], function (Record) {
 
-	var Record = require('bff/record');
+	'use strict';
 
 	return Record.withProperties({
 
 		title: 'string',
 
-		completed: {
-			type: 'boolean',
-			defaultValue: false,
-		},
+		completed: { type: 'boolean', defaultValue: false },
 
-		active: {
-			getter: function () { return !this.completed; },
-			setter: false,
-		}
+		active: { type: 'boolean', getter: function () { return !this.completed; }  },
 
 	});
 

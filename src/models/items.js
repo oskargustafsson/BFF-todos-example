@@ -1,7 +1,6 @@
-define(function (require) {
-	'use strict';
+define([ 'bff/list' ], function (List) {
 
-	var List = require('bff/list');
+	'use strict';
 
 	var ItemList = List.withProperties({
 
