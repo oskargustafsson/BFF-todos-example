@@ -1,15 +1,13 @@
 define([ 'bff/record' ], function (Record) {
-
 	'use strict';
 
 	return Record.withProperties({
-
 		title: 'string',
-
 		completed: { type: 'boolean', defaultValue: false },
-
-		active: { type: 'boolean', getter: function () { return !this.completed; }  },
-
+		// The "active" property is calculated from the "completed" property
+		// In its current form it is not type checked and will not emit any events, as neither is needed.
+		// By adding "setter: false", we make sure an error is thrown when trying to assign a value to this property.
+		active: { getter: function () { return !this.completed; }, setter: false },
 	});
 
 });

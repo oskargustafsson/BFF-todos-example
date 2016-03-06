@@ -2,6 +2,5 @@
 - Write unit tests
 - File structure
 - README file
-- .gitignore (don't ignore the files used by the example)
 - Run automated browser tests
 - Build minified/concatenated version

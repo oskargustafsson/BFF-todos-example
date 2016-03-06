@@ -1,7 +1,9 @@
 require.config({
+	// Define some RequireJS path shortcuts
 	paths: {
 		'text': '../node_modules/requirejs-text/text',
 	},
+	// Specify root locations for our dependencies (BFF and Lodash)
 	packages: [ {
 		name: 'bff',
 		location: '../node_modules/bff-lib/dist/dev', // Change to /prod for minified code w/ no error checks
