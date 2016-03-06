@@ -1,6 +1,6 @@
 define(
-	[ 'bff/view', 'bff/extend', './model',  'app/router',  '_/template', 'text!./template.html' ], function (
-	   View,       extend,       RowRecord,  router,        _template,    templateHtml) {
+	[ 'bff/view', 'bff/extend', './model',     'app/router',  '_/template', 'text!./template.html' ], function (
+	   View,       extend,       RowViewState,  router,        _template,    templateHtml) {
 
 	'use strict';
 
@@ -11,7 +11,7 @@ define(
 
 		constructor: function (item) {
 			this.item = item;
-			this.viewState = new RowRecord({ visible: this.isVisible() });
+			this.viewState = new RowViewState({ visible: this.isVisible() });
 			this.render();
 			// DOM change listeners
 			this.listenTo('input.toggle', 'change', this.setItemCompletedState);

@@ -1,6 +1,6 @@
 define(
-	[ 'bff/view', 'bff/extend', 'models/item', './row/view', 'models/items', 'app/router', '_/template', 'text!./template.html' ], function (
-	   View,       extend,       ItemRecord,    RowView,      items,          router,       _template,    templateHtml) {
+	[ 'bff/view', 'bff/extend', 'models/item', 'models/items', './row/view', './router', '_/template', 'text!./template.html' ], function (
+	   View,       extend,       Item,          items,          RowView,      router,     _template,    templateHtml) {
 
 	'use strict';
 
@@ -33,7 +33,7 @@ define(
 		addItem: function (ev) {
 			if (ev.which !== ENTER) { return; }
 			var itemText = ev.target.value.trim();
-			itemText && items.push(new ItemRecord({ title: itemText }));
+			itemText && items.push(new Item({ title: itemText }));
 		},
 
 		removeAllItems: function () {
@@ -45,8 +45,8 @@ define(
 			items.forEach(function (item) { item.completed = completed; });
 		},
 
-		addItemView: function (itemRecord) {
-			this.$('#todo-list').appendChild(new RowView(itemRecord).el);
+		addItemView: function (itemModel) {
+			this.$('#todo-list').appendChild(new RowView(itemModel).el);
 		},
 
 		saveItems: function () {
@@ -54,7 +54,7 @@ define(
 		},
 
 		loadItems: function () {
-			var itemDataToModel = function (itemData) { return new ItemRecord(itemData); };
+			var itemDataToModel = function (itemData) { return new Item(itemData); };
 			items.pushAll(JSON.parse(localStorage[LOCAL_STORAGE_NS] || '[]').map(itemDataToModel));
 		},
 
