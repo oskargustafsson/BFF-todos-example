@@ -7,14 +7,14 @@ define(
 	var template = _template(templateHtml);
 	var ENTER = 13, ESCAPE = 27;
 
-	var ItemListRowView = View.prototype.makeSubclass({
+	return View.makeSubclass({
 
 		constructor: function (item) {
 			this.item = item;
 			this.viewState = new RowViewState({ visible: this.isVisible() });
 			this.render();
 			// DOM change listeners
-			this.listenTo('input.toggle', 'change', this.setItemCompletedState);
+			this.listenTo('input.toggle', 'change', this.setCompletedState);
 			this.listenTo('input.edit', 'keydown', this.onKeyDown);
 			this.listenTo('input.edit', 'blur', this.leaveEditMode.bind(this, true));
 			this.listenTo('button.destroy', 'click', this.removeItem);
@@ -43,7 +43,7 @@ define(
 			this.item.title || this.removeItem();
 		},
 
-		setItemCompletedState: function (ev) {
+		setCompletedState: function (ev) {
 			this.item.completed = ev.target.checked;
 		},
 
@@ -69,7 +69,5 @@ define(
 		},
 
 	});
-
-	return ItemListRowView;
 
 });

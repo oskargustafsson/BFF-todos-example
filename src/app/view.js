@@ -8,7 +8,7 @@ define(
 	var LOCAL_STORAGE_NS = 'todos-bff';
 	var ENTER = 13;
 
-	return View.prototype.makeSubclass({
+	return View.makeSubclass({
 
 		constructor: function () {
 			// Render this view; will set this.el to what is returned (and parsed) from getHtml()
