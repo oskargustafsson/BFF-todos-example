@@ -14,9 +14,9 @@ define(
 			// Render this view; will set this.el to what is returned (and parsed) from getHtml()
 			this.render();
 			// DOM change listeners
-			this.listenTo('#new-todo', 'keydown', this.addItem);
-			this.listenTo('#clear-completed', 'click', this.removeAllItems);
-			this.listenTo('input#toggle-all', 'change', this.toggleAllItems);
+			this.listenTo('.new-todo', 'keydown', this.addItem);
+			this.listenTo('.clear-completed', 'click', this.removeAllItems);
+			this.listenTo('input.toggle-all', 'change', this.toggleAllItems);
 			// Data change listeners
 			this.listenTo(items, [ 'change:length', 'item:change' ], this.saveItems);
 			this.listenTo(items, 'item:added', this.addItemView);
@@ -46,7 +46,7 @@ define(
 		},
 
 		addItemView: function (itemModel) {
-			this.$('#todo-list').appendChild(new RowView(itemModel).el);
+			this.$('.todo-list').appendChild(new RowView(itemModel).el);
 		},
 
 		saveItems: function () {
