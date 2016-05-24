@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "bff-lib": "^0.4.0",
+    "bff-lib": "^0.5.0",
     "director": "^1.2.8",
     "lodash-amd": "^4.6.1",
     "requirejs": "^2.1.22",
