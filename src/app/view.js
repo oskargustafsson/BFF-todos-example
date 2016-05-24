@@ -1,10 +1,10 @@
 define(
-	[ 'bff/view', 'bff/extend', 'models/item', 'models/items', './row/view', './router', '_/template', 'text!./template.html' ], function (
-	   View,       extend,       Item,          items,          RowView,      router,     _template,    templateHtml) {
+	[ 'bff/view', 'bff/extend', 'models/item', 'models/items', './row/view', './router', 'doT', 'text!./template.dot' ], function (
+	   View,       extend,       Item,          items,          RowView,      router,     doT,   templateStr) {
 
 	'use strict';
 
-	var template = _template(templateHtml);
+	var template = doT.template(templateStr);
 	var LOCAL_STORAGE_NS = 'todos-bff';
 	var ENTER = 13;
 

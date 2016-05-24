@@ -1,10 +1,10 @@
 define(
-	[ 'bff/view', 'bff/extend', './model',     'app/router',  '_/template', 'text!./template.html' ], function (
-	   View,       extend,       RowViewState,  router,        _template,    templateHtml) {
+	[ 'bff/view', 'bff/extend', './model',     'app/router',  'doT', 'text!./template.dot' ], function (
+	   View,       extend,       RowViewState,  router,        doT,   templateStr) {
 
 	'use strict';
 
-	var template = _template(templateHtml);
+	var template = doT.template(templateStr);
 	var ENTER = 13, ESCAPE = 27;
 
 	return View.makeSubclass({

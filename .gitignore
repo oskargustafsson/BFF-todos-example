@@ -20,6 +20,9 @@ node_modules/requirejs/*
 node_modules/requirejs-text/*
 !node_modules/requirejs-text/text.js
 
+node_modules/dot/*
+!node_modules/dot/doT.js
+
 node_modules/director/*
 !node_modules/director/build
 node_modules/director/build/*

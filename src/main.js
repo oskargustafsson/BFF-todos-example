@@ -1,16 +1,14 @@
 require.config({
 	// Define some RequireJS path shortcuts
 	paths: {
-		'text': '../node_modules/requirejs-text/text',
+		text: '../node_modules/requirejs-text/text',
+		doT: '../node_modules/dot/doT',
 	},
-	// Specify root locations for our dependencies (BFF and Lodash)
+	// Specify BFF as a package. This is needed because BFF modules use relative dependency paths internally
 	packages: [ {
 		name: 'bff',
 		location: '../node_modules/bff-lib/dist/dev', // Change to /prod for minified code w/ no error checks
-	}, {
-		name: '_',
-		location: '../node_modules/lodash-amd',
-	} ],
+	}, ],
 });
 
 require([ 'app/view' ], function (AppView) {
