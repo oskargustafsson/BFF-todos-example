@@ -1,6 +1,4 @@
 - IE9 compat
-- Write unit tests
-- File structure
 - README file
 - Run automated browser tests
 - Build minified/concatenated version
