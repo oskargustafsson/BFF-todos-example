@@ -1,3 +1,0 @@
-- README file
-- Run automated browser tests
-- Build minified/concatenated version
