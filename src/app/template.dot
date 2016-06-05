@@ -18,7 +18,7 @@
 				<li><a href="#/active" class="{{? it.route === 'active' }}selected{{?}}">Active</a></li>
 				<li><a href="#/completed" class="{{? it.route === 'completed' }}selected{{?}}">Completed</a></li>
 			</ul>
-			<button class="clear-completed" class="{{? it.nCompleted === 0 }}hidden{{?}}">
+			<button class="clear-completed {{? it.nCompleted === 0 }}hidden{{?}}">
 				Clear completed
 			</button>
 		</footer>
