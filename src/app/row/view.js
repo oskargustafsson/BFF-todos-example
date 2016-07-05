@@ -1,11 +1,18 @@
-define(
-	[ 'bff/view', 'bff/extend', './model',     'app/router',  'doT', 'text!./template.dot' ], function (
-	   View,       extend,       RowViewState,  router,        doT,   templateStr) {
+/* global define */
+define([
+	'bff/view',
+	'bff/extend',
+	'doT',
+	'text!./template.dot',
+	'./model',
+	'app/router'
+], function (View, extend, doT, templateStr, RowViewState, router) {
 
 	'use strict';
 
 	var template = doT.template(templateStr);
-	var ENTER = 13, ESCAPE = 27;
+	var ENTER = 13;
+	var ESCAPE = 27;
 
 	return View.makeSubclass({
 
@@ -20,14 +27,14 @@ define(
 			this.listenTo('button.destroy', 'click', this.removeItem);
 			this.listenTo('label', 'dblclick', this.enterEditMode);
 			// Data change listeners
-			this.listenTo([ item, this.viewState ], 'change', this.requestRender);
-			this.listenTo([ item, router ], 'change', this.onChange);
+			this.listenTo([item, this.viewState], 'change', this.requestRender);
+			this.listenTo([item, router], 'change', this.onChange);
 			this.listenTo(item, 'removed', this.destroy);
 		},
 
 		render: function () {
 			View.prototype.render.call(this, { ignoreSubtreeOf: 'input.edit' });
-			this.viewState.editing && this.$('input.edit').focus();
+			if (this.viewState.editing) { this.$('input.edit').focus(); }
 		},
 
 		getHtml: function () {
@@ -40,7 +47,7 @@ define(
 
 		onChange: function () {
 			this.viewState.visible = this.isVisible();
-			this.item.title || this.removeItem();
+			if (!this.item.title) { this.removeItem(); }
 		},
 
 		setCompletedState: function (ev) {
@@ -66,7 +73,7 @@ define(
 
 		removeItem: function () {
 			this.item.emit('requestRemove', this.item);
-		},
+		}
 
 	});
 

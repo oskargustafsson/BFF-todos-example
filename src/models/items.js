@@ -1,4 +1,5 @@
-define([ 'bff/list' ], function (List) {
+/* global define */
+define(['bff/list'], function (List) {
 
 	'use strict';
 
@@ -11,10 +12,10 @@ define([ 'bff/list' ], function (List) {
 			// Because we specify that this property depends on the list length and the completed state of all list
 			// items, whenever any of those change, a check will be performed to see if this property has changed, and
 			// if so a change event will be emitted.
-			dependencies: [ 'length', 'item:completed' ],
+			dependencies: ['length', 'item:completed']
 		},
 		// No dependencies specified -> will not trigger any events (no one is listening anyway)
-		nActive: { getter: function () { return this.length - this.nCompleted; } },
+		nActive: { getter: function () { return this.length - this.nCompleted; } }
 
 	});
 

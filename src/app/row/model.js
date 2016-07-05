@@ -1,4 +1,5 @@
-define([ 'bff/record' ], function (Record) {
+/* global define */
+define(['bff/record'], function (Record) {
 
 	'use strict';
 
@@ -6,7 +7,7 @@ define([ 'bff/record' ], function (Record) {
 
 		visible: 'boolean',
 
-		editing: { type: 'boolean', defaultValue: false },
+		editing: { type: 'boolean', defaultValue: false }
 
 	});
 

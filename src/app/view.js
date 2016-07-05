@@ -1,6 +1,14 @@
-define(
-	[ 'bff/view', 'bff/extend', 'models/item', 'models/items', './row/view', './router', 'doT', 'text!./template.dot' ], function (
-	   View,       extend,       Item,          items,          RowView,      router,     doT,   templateStr) {
+/* global define */
+define([
+	'bff/view',
+	'bff/extend',
+	'doT',
+	'text!./template.dot',
+	'models/item',
+	'models/items',
+	'./row/view',
+	'./router'
+], function (View, extend, doT, templateStr, Item, items, RowView, router) {
 
 	'use strict';
 
@@ -18,10 +26,10 @@ define(
 			this.listenTo('.clear-completed', 'click', this.removeAllItems);
 			this.listenTo('input.toggle-all', 'change', this.toggleAllItems);
 			// Data change listeners
-			this.listenTo(items, [ 'change:length', 'item:change' ], this.saveItems);
+			this.listenTo(items, ['change:length', 'item:change'], this.saveItems);
 			this.listenTo(items, 'item:added', this.addItemView);
 			this.listenTo(items, 'item:requestRemove', items.remove, items);
-			this.listenTo([ router, items ], 'change', this.requestRender);
+			this.listenTo([router, items], 'change', this.requestRender);
 			// Load saved items
 			this.loadItems();
 		},
@@ -33,7 +41,7 @@ define(
 		addItem: function (ev) {
 			if (ev.which !== ENTER) { return; }
 			var itemText = ev.target.value.trim();
-			itemText && items.push(new Item({ title: itemText }));
+			if (itemText) { items.push(new Item({ title: itemText })); }
 		},
 
 		removeAllItems: function () {
@@ -56,7 +64,7 @@ define(
 		loadItems: function () {
 			var itemDataToModel = function (itemData) { return new Item(itemData); };
 			items.pushAll(JSON.parse(localStorage[LOCAL_STORAGE_NS] || '[]').map(itemDataToModel));
-		},
+		}
 
 	});
 

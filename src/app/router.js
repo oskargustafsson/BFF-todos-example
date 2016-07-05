@@ -1,5 +1,5 @@
-/* global Router */
-define([ 'bff/record' ], function (Record) {
+/* global define, Router */
+define(['bff/record'], function (Record) {
 
 	'use strict';
 
