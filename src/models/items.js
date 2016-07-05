@@ -1,4 +1,5 @@
 define([ 'bff/list' ], function (List) {
+
 	'use strict';
 
 	var ItemList = List.withProperties({

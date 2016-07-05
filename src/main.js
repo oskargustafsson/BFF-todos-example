@@ -12,7 +12,9 @@ require.config({
 });
 
 require([ 'app/view' ], function (AppView) {
+
 	'use strict';
 	// Create the main app view and attach its DOM element to the document
 	document.body.appendChild(new AppView().el);
+
 });

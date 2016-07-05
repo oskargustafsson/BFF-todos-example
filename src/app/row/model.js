@@ -1,4 +1,5 @@
 define([ 'bff/record' ], function (Record) {
+
 	'use strict';
 
 	return Record.withProperties({

@@ -1,5 +1,6 @@
 /* global Router */
 define([ 'bff/record' ], function (Record) {
+
 	'use strict';
 
 	// Define a router record constructor on the fly and create one instance of it
