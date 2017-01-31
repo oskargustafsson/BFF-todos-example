@@ -3,6 +3,10 @@
 BFF is a collection of generic building blocks that can be used to minimize the amount of boilerplate code needed to create an interactive web application. The modules are designed with the MVC pattern in mind, although most of them are generic enough to be usable in many other patterns. Each of the seven modules (Record, List, View, Extend, Event Emitter, Event Listener, and Patch DOM) can be used on its own, but together they create a web development foundation that is stronger than the sum of the individual parts. This todo list example application combines all modules in an idiomatic way.
 
 
+## Live demo
+[Here](http://oskargustafsson.github.io/BFF-todos-example/#/)
+
+
 ## Resources
 
 - [Website](https://github.com/oskargustafsson/BFF)
